@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { authClient } from "../api/auth-client";
-import { Button, Input } from "../../../shared/components";
+import { Button, Input, Label, Card, CardHeader, CardTitle, CardContent } from "@/shared/components/ui";
 
 export function SignUpForm({ onSuccess }: { onSuccess?: () => void }) {
   const [email, setEmail] = useState("");
@@ -36,49 +36,64 @@ export function SignUpForm({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-sm mx-auto p-4 border rounded space-y-4"
-    >
-      <h2 className="text-xl font-bold mb-4">Sign Up</h2>
-      
-      <Input
-        type="text"
-        label="Name"
-        placeholder="Enter your full name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      
-      <Input
-        type="email"
-        label="Email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      
-      <Input
-        type="password"
-        label="Password"
-        placeholder="Create a password (min 8 characters)"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        minLength={8}
-      />
-      
-      <Button
-        type="submit"
-        className="w-full"
-        isLoading={isPending}
-      >
-        Sign Up
-      </Button>
-      
-      {error && <div className="text-red-600 text-sm">{error}</div>}
-    </form>
+    <Card className="max-w-sm mx-auto">
+      <CardHeader>
+        <CardTitle>Sign Up</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              type="text"
+              placeholder="Enter your full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Create a password (min 8 characters)"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
+            />
+          </div>
+          
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending}
+          >
+            {isPending ? "Signing up..." : "Sign Up"}
+          </Button>
+          
+          {error && (
+            <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-md border border-destructive/20">
+              {error}
+            </div>
+          )}
+        </form>
+      </CardContent>
+    </Card>
   );
 }

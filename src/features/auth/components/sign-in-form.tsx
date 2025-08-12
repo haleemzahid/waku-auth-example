@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { authClient } from "../api/auth-client";
-import { Button, Input } from "../../../shared/components";
+import { Button, Input, Label, Card, CardHeader, CardTitle, CardContent } from "@/shared/components/ui";
 
 export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   const [email, setEmail] = useState("");
@@ -42,40 +42,52 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-sm mx-auto p-4 border rounded mt-6 space-y-4"
-    >
-      <h2 className="text-xl font-bold mb-4">Sign In</h2>
-      
-      <Input
-        type="email"
-        label="Email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      
-      <Input
-        type="password"
-        label="Password"
-        placeholder="Enter your password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-        minLength={8}
-      />
-      
-      <Button
-        type="submit"
-        className="w-full"
-        isLoading={isPending}
-      >
-        Sign In
-      </Button>
-      
-      {error && <div className="text-red-600 text-sm">{error}</div>}
-    </form>
+    <Card className="max-w-sm mx-auto mt-6">
+      <CardHeader>
+        <CardTitle>Sign In</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={8}
+            />
+          </div>
+          
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isPending}
+          >
+            {isPending ? "Signing in..." : "Sign In"}
+          </Button>
+          
+          {error && (
+            <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-md border border-destructive/20">
+              {error}
+            </div>
+          )}
+        </form>
+      </CardContent>
+    </Card>
   );
 }

@@ -2,6 +2,7 @@
 
 import { authClient } from "../api/auth-client";
 import { useRouter } from "waku";
+import { Button } from "@/shared/components/ui";
 
 export function SignOutLink() {
   const router = useRouter();
@@ -16,8 +17,8 @@ export function SignOutLink() {
   };
 
   return (
-    <button onClick={handleSignOut} className="text-sm text-gray-500 underline">
+    <Button variant="ghost" size="sm" onClick={handleSignOut}>
       Sign out
-    </button>
+    </Button>
   );
 }
