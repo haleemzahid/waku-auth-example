@@ -1,11 +1,10 @@
-import "../styles.css";
+import "../app/styles/globals.css";
 
 import { Suspense, type ReactNode } from "react";
 
-import { Header } from "../components/header";
-import { Footer } from "../components/footer";
+import { Header, Footer } from "../app/layout";
 import { getContextData } from "waku/middleware/context";
-import { Session } from "@/lib/auth-client";
+import { Session } from "../features/auth/api/auth-client";
 
 type RootLayoutProps = { children: ReactNode };
 

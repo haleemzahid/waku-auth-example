@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { authClient } from "../lib/auth-client";
+import { authClient } from "../api/auth-client";
+import { Button, Input } from "../../../shared/components";
 
 export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   const [email, setEmail] = useState("");
@@ -43,34 +44,38 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-sm mx-auto p-4 border rounded mt-6"
+      className="max-w-sm mx-auto p-4 border rounded mt-6 space-y-4"
     >
-      <h2 className="text-xl font-bold mb-2">Sign In</h2>
-      <input
+      <h2 className="text-xl font-bold mb-4">Sign In</h2>
+      
+      <Input
         type="email"
-        placeholder="Email"
+        label="Email"
+        placeholder="Enter your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="block w-full mb-2 p-2 border rounded"
         required
       />
-      <input
+      
+      <Input
         type="password"
-        placeholder="Password"
+        label="Password"
+        placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="block w-full mb-2 p-2 border rounded"
         required
         minLength={8}
       />
-      <button
+      
+      <Button
         type="submit"
-        className="w-full bg-blue-600 text-white py-2 rounded"
-        disabled={isPending}
+        className="w-full"
+        isLoading={isPending}
       >
-        {isPending ? "Signing in..." : "Sign In"}
-      </button>
-      {error && <div className="text-red-600 mt-2">{error}</div>}
+        Sign In
+      </Button>
+      
+      {error && <div className="text-red-600 text-sm">{error}</div>}
     </form>
   );
 }

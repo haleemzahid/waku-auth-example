@@ -1,5 +1,13 @@
 import { createAuthClient } from "better-auth/react";
 
+declare global {
+  interface ImportMeta {
+    env: {
+      WAKU_PUBLIC_BETTER_AUTH_URL?: string;
+    };
+  }
+}
+
 export const authClient = createAuthClient({
   /** The base URL of the server (optional if you're using the same domain) */
   baseURL:

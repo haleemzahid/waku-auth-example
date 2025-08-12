@@ -1,6 +1,6 @@
 "use client";
 
-import { authClient } from "@/lib/auth-client";
+import { authClient } from "../api/auth-client";
 import { useRouter } from "waku";
 
 export function SignOutLink() {

@@ -1,5 +1,5 @@
 import { Link } from "waku";
-import { SignOutLink } from "./sign-out-link";
+import { SignOutLink } from "../../../features/auth/components/sign-out-button";
 
 export const Header = ({ greeting }: { greeting: string }) => {
   return (
