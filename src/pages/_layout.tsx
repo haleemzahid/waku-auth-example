@@ -11,13 +11,24 @@ type RootLayoutProps = { children: ReactNode };
 export default async function RootLayout({ children }: RootLayoutProps) {
   const data = await getData();
   const session = getContextData().session as Session | undefined;
-  console.log("Session in layout:", session);
 
+  // If user is authenticated, don't show header/footer (dashboard handles its own layout)
+  if (session) {
+    return (
+      <div className="font-['Nunito']">
+        <meta name="description" content={data.description} />
+        <link rel="icon" type="image/png" href={data.icon} />
+        <Suspense>{children}</Suspense>
+      </div>
+    );
+  }
+
+  // For unauthenticated users, show the normal layout with header/footer
   return (
     <div className="font-['Nunito']">
       <meta name="description" content={data.description} />
       <link rel="icon" type="image/png" href={data.icon} />
-      <Header greeting={session ? `Hello, ${session.user.name}` : ""} />
+      <Header greeting="" />
       <main className="m-6 flex items-center *:min-h-64 *:min-w-64 lg:m-0 lg:min-h-svh lg:justify-center">
         <Suspense>{children}</Suspense>
       </main>

@@ -2,39 +2,28 @@ import { Link } from "waku";
 
 import { Counter } from "../features/counter";
 import { AuthForms } from "../features/auth";
-import { WelcomeSection } from "../features/dashboard";
+import { LandingPage } from "../features/landing";
 import { getContextData } from "waku/middleware/context";
 import type { Session } from "../features/auth/types";
+import { Redirect } from "../shared/components";
 
 export default async function HomePage() {
-  const data = await getData();
   const session = getContextData().session as Session | undefined;
 
-  // If not signed in, show auth forms
+  // If not signed in, show landing page
   if (!session) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <title>{data.title}</title>
-            <h1 className="text-4xl font-bold tracking-tight mb-4">{data.headline}</h1>
-            <p className="text-gray-600">{data.body}</p>
-          </div>
-          <AuthForms />
-        </div>
-      </div>
-    );
+    return <LandingPage />;
   }
 
-  // If signed in, show main content
+  // If signed in, redirect to dashboard using client-side navigation
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-4xl mx-auto px-4">
-        <WelcomeSection 
-          title={data.title}
-          headline={data.headline}
-          body={data.body}
-        />
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center">
+        <p className="mb-4">Redirecting to dashboard...</p>
+        <Link to="/dashboard" className="text-blue-600 hover:underline">
+          Go to Dashboard
+        </Link>
+        <Redirect to="/dashboard" replace />
       </div>
     </div>
   );
