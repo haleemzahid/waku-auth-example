@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Header, Footer } from "../../app/layout";
+import { PageSkeleton } from "./ui/skeleton";
 
 interface LayoutProviderProps {
   children: React.ReactNode;
@@ -16,7 +17,22 @@ export const LayoutProvider = ({ children, isAuthenticated = false }: LayoutProv
   }, []);
 
   if (!mounted) {
-    return <div className="min-h-screen">{children}</div>;
+    // Show appropriate skeleton based on auth state
+    return (
+      <div className="min-h-screen">
+        {isAuthenticated ? (
+          <PageSkeleton />
+        ) : (
+          <div className="min-h-screen flex flex-col">
+            <div className="h-16 border-b bg-background" />
+            <main className="flex-1">
+              <PageSkeleton />
+            </main>
+            <div className="h-16 border-t bg-background" />
+          </div>
+        )}
+      </div>
+    );
   }
 
   if (isAuthenticated) {

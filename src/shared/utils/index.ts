@@ -7,3 +7,4 @@ export function cn(...inputs: ClassValue[]) {
 
 // Shared utilities - add utility functions here as needed
 // export { formatDate } from './date';
+export { isValidSession, getSessionFromContext } from './auth-guards';

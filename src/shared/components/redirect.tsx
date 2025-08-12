@@ -13,11 +13,8 @@ export const Redirect = ({ to, replace = false }: RedirectProps) => {
 
   useEffect(() => {
     if (replace) {
-        console.log('red')
       router.replace(to);
     } else {
-        console.log('red')
-
       router.push(to);
     }
   }, [to, replace, router]);

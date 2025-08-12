@@ -1,6 +1,7 @@
 import type { Middleware } from "waku/config";
 import { auth } from "../auth";
 import { getHonoContext } from "waku/unstable_hono";
+import { isValidSession } from "../shared/utils";
 
 const authMiddleware: Middleware = () => {
   return async (ctx, next) => {
@@ -10,11 +11,14 @@ const authMiddleware: Middleware = () => {
       console.log("Auth middleware running");
       
       // Get session using the raw request from Hono context
-      const session = await auth.api.getSession({
+      const sessionResult = await auth.api.getSession({
         headers: c.req.raw.headers,
       });
       
-      console.log("Session in middleware:", session);
+      // Use type guard to ensure session is valid
+      const session = isValidSession(sessionResult) ? sessionResult : null;
+      
+      console.log("Session in middleware:", session ? "Valid session found" : "No valid session");
       ctx.data.session = session;
     } catch (error) {
       console.error("Error in auth middleware:", error);

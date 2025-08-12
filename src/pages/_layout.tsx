@@ -3,13 +3,13 @@ import "../app/styles/globals.css";
 import { Suspense, type ReactNode } from "react";
 import { LayoutProvider } from "../shared/components";
 import { getContextData } from "waku/middleware/context";
-import { Session } from "../features/auth/api/auth-client";
+import { getSessionFromContext } from "../shared/utils";
 
 type RootLayoutProps = { children: ReactNode };
 
 export default async function RootLayout({ children }: RootLayoutProps) {
   const data = await getData();
-  const session = getContextData().session as Session | undefined;
+  const session = getSessionFromContext(getContextData());
 
   return (
     <div className="font-['Nunito']">

@@ -1,14 +1,14 @@
 import { getContextData } from "waku/middleware/context";
-import type { Session } from "../../features/auth/types";
-import { DashboardLayoutWrapper } from "../../features/dashboard";
+import { DashboardLayout } from "../../features/dashboard";
 import { Redirect } from "../../shared/components";
+import { getSessionFromContext } from "../../shared/utils";
 
-interface DashboardLayoutProps {
+interface DashboardLayoutPageProps {
   children: React.ReactNode;
 }
 
-export default async function DashboardLayout({ children }: DashboardLayoutProps) {
-  const session = getContextData().session as Session | undefined;
+export default async function DashboardLayoutPage({ children }: DashboardLayoutPageProps) {
+  const session = getSessionFromContext(getContextData());
   
   // If not authenticated, redirect to home
   if (!session) {
@@ -18,9 +18,9 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
   const userGreeting = `Hello, ${session.user.name}`;
 
   return (
-    <DashboardLayoutWrapper userGreeting={userGreeting}>
+    <DashboardLayout userGreeting={userGreeting}>
       {children}
-    </DashboardLayoutWrapper>
+    </DashboardLayout>
   );
 }
 

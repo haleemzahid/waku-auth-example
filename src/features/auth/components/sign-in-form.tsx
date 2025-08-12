@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "waku";
 import { authClient } from "../api/auth-client";
 import { Button, Input, Label, Card, CardHeader, CardTitle, CardContent } from "@/shared/components/ui";
 
@@ -9,6 +10,7 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +28,8 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
               if (onSuccess) {
                 onSuccess();
               } else {
-                window.location.reload();
+                // Use router navigation instead of page reload
+                router.push("/dashboard");
               }
             },
             onError: (ctx) => {
@@ -47,29 +50,35 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
         <CardTitle>Sign In</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="signin-email">Email</Label>
             <Input
-              id="email"
+              id="signin-email"
               type="email"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
+              aria-describedby={error ? "signin-error" : undefined}
+              aria-invalid={!!error}
             />
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="signin-password">Password</Label>
             <Input
-              id="password"
+              id="signin-password"
               type="password"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
+              autoComplete="current-password"
+              aria-describedby={error ? "signin-error" : undefined}
+              aria-invalid={!!error}
             />
           </div>
           
@@ -77,12 +86,24 @@ export function SignInForm({ onSuccess }: { onSuccess?: () => void }) {
             type="submit"
             className="w-full"
             disabled={isPending}
+            aria-describedby={isPending ? "signin-loading" : undefined}
           >
             {isPending ? "Signing in..." : "Sign In"}
           </Button>
           
+          {isPending && (
+            <div id="signin-loading" className="sr-only">
+              Please wait, signing you in...
+            </div>
+          )}
+          
           {error && (
-            <div className="text-destructive text-sm bg-destructive/10 p-3 rounded-md border border-destructive/20">
+            <div 
+              id="signin-error"
+              role="alert"
+              aria-live="polite"
+              className="text-destructive text-sm bg-destructive/10 p-3 rounded-md border border-destructive/20"
+            >
               {error}
             </div>
           )}

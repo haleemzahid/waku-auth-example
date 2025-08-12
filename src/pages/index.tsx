@@ -4,11 +4,11 @@ import { Counter } from "../features/counter";
 import { AuthForms } from "../features/auth";
 import { LandingPage } from "../features/landing";
 import { getContextData } from "waku/middleware/context";
-import type { Session } from "../features/auth/types";
+import { getSessionFromContext } from "../shared/utils";
 import { Redirect } from "../shared/components";
 
 export default async function HomePage() {
-  const session = getContextData().session as Session | undefined;
+  const session = getSessionFromContext(getContextData());
 
   // If not signed in, show landing page
   if (!session) {
